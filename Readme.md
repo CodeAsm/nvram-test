@@ -117,16 +117,40 @@ Explore PCI devices and print their configuration space.
 Your probably better of using lspci (with -v flags or -xxx). 
 
 ```bash
-./explore
+./explore <pci_device_path>
+```
+
+Example:
+```bash
+./explore /proc/bus/pci/00/14.0
 ```
 
 Example output:
 ```
-NetApp PCI Device Found:
-  Bus: 00, Device: 14, Function: 00
-  Vendor ID: 1275, Device ID: 0001
+Decoded PCI Configuration Space:
+	Vendor ID: 1275
+	Device ID: 0001
+	Command: 0007
+	Status: 0280
+	Class Code: 06
+	Subclass: 80
+	Cache Line Size: 00
+	Latency Timer: 20 (32 PCI clock cycles)
+	Header Type: 00
+	This is a single-function device.
+	BAR0: 0xe3001000
+	BAR1: 0x0000e001
+	BAR2: 0xdc000000
 PCI Configuration Space:
-...
+
+		00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
+    00: 75 12 01 00 07 00 80 02 00 00 80 06 00 20 00 00 
+    10: 00 10 00 e3 01 e0 00 00 00 00 00 dc 00 00 00 00 
+    20: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    30: 00 00 00 00 00 00 00 00 00 00 00 00 0c 01 00 00 
+    40: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+    50: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ...
 ```
 
 ## Transferring Files
