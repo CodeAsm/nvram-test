@@ -80,37 +80,46 @@ DC000070  95 80 C0 60 B2 68 E0 E4 63 C9 B8 A0 A4 72 8D E4   ...`.h..c....r..
 
 
 ### 2. `nvramwrite`
-Write data to NVRAM at a specific physical address.
+1. **Direct Byte Writing**:
+   - The program writes a sequence of bytes specified as a hex string to the memory region.
+   - Example:
+     ```bash
+     sudo ./nvramwrite 0xDC000000 16 FF00AABBCCDDEEFF1122334455667788
+     ```
 
-```bash
-./nvramwrite <phys_addr_hex> <data_hex> <length>
-```
-Example:
-```bash
-./nvramwrite 0xe3001000 64 8
-```
+   - Or better, a tested example:
+      ```bash
+      ./nvramwrite 0xDC000000 4 deadbeef
+      ```
+      and when you read now, you get (or should):
+      ```bash
+      ./nvramdump  0xDC000000 128
+      nvramdump 0.2 - Dump NVRAM content from physical memory
+      Dump of 128 bytes @ 0xDC000000:
+      
+      DC000000  DE AD BE EF 00 00 0E 00 15 DD 95 15 21 28 D5 1A   ............!(..
+      DC000010  0D D4 54 80 48 F7 05 40 49 66 2F 03 BD 93 15 20   ..T.H..@If/.... 
+      DC000020  74 FC 77 55 11 5F 15 D4 1C 19 01 53 1F C8 15 05   t.wU._.....S....
+      DC000030  70 21 55 50 04 C7 5D 6C 01 11 44 15 60 97 05 85   p!UP..]l..D.`...
+      DC000040  B4 A8 E4 E1 DD 8C F1 A8 B5 82 F4 E1 7D 28 D1 A4   ............}(..
+      DC000050  E5 22 B1 F2 20 E5 E0 E0 A8 CB 22 F3 E1 C9 B5 B5   .".. .....".....
+      DC000060  A8 40 E1 E9 67 A8 F5 A4 A9 B9 B2 B0 30 CB C0 F3   .@..g.......0...
+      DC000070  95 80 C0 60 B2 68 E0 E4 63 C9 B8 A0 A4 72 8D E4   ...`.h..c....r..
+      ```
 
-Or better, a example i tested:
-```bash
-./nvramwrite 0xDC000000 DEADBEEF 8
-```
-and when you read now, you get (or should):
-```bash
-./nvramdump  0xDC000000 128
-nvramdump 0.2 - Dump NVRAM content from physical memory
-Dump of 128 bytes @ 0xDC000000:
+2. **Block Wiping**:
+   - The program wipes the memory region with a repeating byte pattern.
+   - Example:
+     ```bash
+     sudo ./nvramwrite 0xDC000000 4096 --wipe 0xFF
+     ```
 
-DC000000  DE AD BE EF 00 00 0E 00 15 DD 95 15 21 28 D5 1A   ............!(..
-DC000010  0D D4 54 80 48 F7 05 40 49 66 2F 03 BD 93 15 20   ..T.H..@If/.... 
-DC000020  74 FC 77 55 11 5F 15 D4 1C 19 01 53 1F C8 15 05   t.wU._.....S....
-DC000030  70 21 55 50 04 C7 5D 6C 01 11 44 15 60 97 05 85   p!UP..]l..D.`...
-DC000040  B4 A8 E4 E1 DD 8C F1 A8 B5 82 F4 E1 7D 28 D1 A4   ............}(..
-DC000050  E5 22 B1 F2 20 E5 E0 E0 A8 CB 22 F3 E1 C9 B5 B5   .".. .....".....
-DC000060  A8 40 E1 E9 67 A8 F5 A4 A9 B9 B2 B0 30 CB C0 F3   .@..g.......0...
-DC000070  95 80 C0 60 B2 68 E0 E4 63 C9 B8 A0 A4 72 8D E4   ...`.h..c....r..
-```
-
-
+3. **File Writing**:
+   - The program writes the contents of a file to the memory region.
+   - Example:
+     ```bash
+     sudo ./nvramwrite 0xDC000000 4096 --write myfile.bin
+     ```
 
 ### 3. `explore`
 Explore PCI devices and print their configuration space.
