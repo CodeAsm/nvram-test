@@ -32,7 +32,7 @@ void dump_nvram(off_t target, size_t length) {
 
         volatile uint8_t *virt_addr = (volatile uint8_t *)map_base + ((target + offset) & MAP_MASK);
 
-        printf("Dump of %zu bytes @ 0x%08lX:\n", chunk_size, (unsigned long)(target + offset));
+        //printf("Dump of %zu bytes @ 0x%08lX:\n", chunk_size, (unsigned long)(target + offset));
         for (size_t i = 0; i < chunk_size; i++) {
             if (i % 16 == 0) {
                 if (i > 0) {
@@ -58,12 +58,12 @@ void dump_nvram(off_t target, size_t length) {
             char c = virt_addr[i];
             printf("%c", (c >= 32 && c <= 126) ? c : '.');
         }
-        printf("\n");
+        //printf("\n");
 
         munmap(map_base, MAP_SIZE);
         offset += chunk_size;
     }
-
+	printf("\n");
     close(fd);
 }
 
@@ -84,5 +84,6 @@ int main(int argc, char **argv) {
     }
 	printf("nvramdump 0.2 - Dump NVRAM content from physical memory\n");
     dump_nvram(target, length);
+	
     return 0;
 }
